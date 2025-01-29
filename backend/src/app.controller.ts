@@ -1,12 +1,24 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Res,
+} from '@nestjs/common';
+import { ShortenerService } from './shortener/services/shortener.service';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly shortenerService: ShortenerService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get(':token')
+  async accessUrl(@Param('token') token: string, @Res() res: Response) {
+    const shortUrl = await this.shortenerService.getByToken(token);
+    if (!shortUrl)
+      throw new HttpException('URL not found', HttpStatus.BAD_REQUEST);
+
+    res.redirect(shortUrl.url);
   }
 }

@@ -12,5 +12,6 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   controllers: [ShortenerController],
   providers: [ShortenerService],
+  exports: [ShortenerService],
 })
 export class ShortenerModule {}
