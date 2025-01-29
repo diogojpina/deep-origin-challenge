@@ -12,6 +12,9 @@ export class ShortenerService {
   ) {}
 
   async create(data: ShortUrlDto): Promise<ShortUrl> {
+    if (!this.isValidUrl(data.url))
+      throw new HttpException('Invalid URL', HttpStatus.BAD_REQUEST);
+
     for (let i = 1; i <= 10; i++) {
       const token = this.generateToken(6);
       if ((await this.getByToken(token)) !== null) continue;
@@ -26,6 +29,15 @@ export class ShortenerService {
 
   async getByToken(token: string): Promise<ShortUrlDocument | null> {
     return await this.shortUrlModel.findOne({ token });
+  }
+
+  isValidUrl(url: string): boolean {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   generateToken(length: number): string {
