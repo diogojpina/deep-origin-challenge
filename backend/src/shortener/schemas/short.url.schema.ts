@@ -8,8 +8,8 @@ export class ShortUrl {
   @Prop({ required: true, index: true })
   url: string;
 
-  @Prop({ required: true, index: true })
-  shortUrl: string;
+  @Prop({ required: true, unique: true, index: true })
+  token: string;
 }
 
 export const ShortUrlSchema = SchemaFactory.createForClass(ShortUrl);

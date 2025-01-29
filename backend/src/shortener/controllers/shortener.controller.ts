@@ -9,7 +9,6 @@ export class ShortenerController {
 
   @Post('/short')
   async shorUrl(@Body() data: ShortUrlDto): Promise<ShortUrl> {
-    console.log('aqui', process.env);
     return await this.shortenerService.create(data);
   }
 }
