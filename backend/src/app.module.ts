@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { ShortenerModule } from './shortener/shortener.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
     ShortenerModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],
