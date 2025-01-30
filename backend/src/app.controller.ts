@@ -17,7 +17,7 @@ export class AppController {
   async accessUrl(@Param('token') token: string, @Res() res: Response) {
     const shortUrl = await this.shortenerService.getByToken(token);
     if (!shortUrl)
-      throw new HttpException('URL not found', HttpStatus.BAD_REQUEST);
+      throw new HttpException('URL not found', HttpStatus.NOT_FOUND);
 
     res.redirect(shortUrl.url);
   }
