@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AuthService } from "../../services";
 import { useNavigate } from "react-router";
+import { Layout } from "../../components/layout/layout";
+import { Box } from "../../components/ui";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -18,27 +20,29 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={login}>
-        <div>
-          <input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <Layout>
+      <Box>
+        <form onSubmit={login}>
+          <div>
+            <input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </Box>
+    </Layout>
   );
 };
 
