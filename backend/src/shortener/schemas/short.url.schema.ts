@@ -13,6 +13,10 @@ export class ShortUrl {
   @Prop({ required: true, unique: true, index: true })
   @ApiProperty({ description: 'Short URL slug' })
   slug: string;
+
+  @Prop({ default: 0 })
+  @ApiProperty({ description: 'Access count' })
+  accessCount: number;
 }
 
 export const ShortUrlSchema = SchemaFactory.createForClass(ShortUrl);

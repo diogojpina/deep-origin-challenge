@@ -23,6 +23,8 @@ export class AppController {
     if (!shortUrl)
       throw new HttpException('URL not found', HttpStatus.NOT_FOUND);
 
+    this.shortenerService.registerAccess(shortUrl);
+
     res.redirect(shortUrl.url);
   }
 }

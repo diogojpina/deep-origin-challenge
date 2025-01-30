@@ -31,6 +31,16 @@ export class ShortenerService {
     return await this.shortUrlModel.findOne({ slug });
   }
 
+  async registerAccess(shortUrl: ShortUrlDocument): Promise<void> {
+    console.log('shortUrl._id', shortUrl._id);
+    const accessCount = shortUrl.accessCount + 1;
+    console.log('new-count', accessCount);
+    await this.shortUrlModel.updateOne(
+      { _id: shortUrl._id },
+      { $set: { accessCount } },
+    );
+  }
+
   isValidUrl(url: string): boolean {
     try {
       new URL(url);
