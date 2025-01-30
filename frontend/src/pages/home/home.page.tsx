@@ -16,7 +16,12 @@ const HomePage = () => {
     }
 
     ShortenerService.short(url)
-      .then((sUrl) => setShortUrl(sUrl))
+      .then((sUrl) =>
+        setShortUrl({
+          ...sUrl,
+          short: `${import.meta.env.VITE_API_URL}/${sUrl.token}`,
+        })
+      )
       .catch((error) => console.log("error", error));
   };
 
@@ -38,7 +43,10 @@ const HomePage = () => {
 
       {shortUrl && (
         <>
-          {import.meta.env.VITE_API_URL}/{shortUrl.token}
+          {shortUrl.short}
+          <button onClick={() => navigator.clipboard.writeText(shortUrl.short)}>
+            Copy
+          </button>
         </>
       )}
     </div>
