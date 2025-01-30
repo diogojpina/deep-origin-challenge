@@ -3,6 +3,7 @@ import { ShortUrlDto } from '../dtos/short.url.dto';
 import { ShortUrl, ShortUrlDocument } from '../schemas/short.url.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { User } from 'src/user/schemas/user.schema';
 
 @Injectable()
 export class ShortenerService {
@@ -11,14 +12,19 @@ export class ShortenerService {
     private readonly shortUrlModel: Model<ShortUrl>,
   ) {}
 
-  async create(data: ShortUrlDto): Promise<ShortUrl> {
+  async create(data: ShortUrlDto, user?: User): Promise<ShortUrl> {
     if (!this.isValidUrl(data.url))
       throw new HttpException('Invalid URL', HttpStatus.BAD_REQUEST);
 
     for (let i = 1; i <= 10; i++) {
       const slug = this.generateSlug(6);
       if ((await this.getBySlug(slug)) !== null) continue;
-      return await new this.shortUrlModel({ ...data, slug }).save();
+      console.log({ ...data, slug, user: user });
+      return await new this.shortUrlModel({
+        ...data,
+        slug,
+        user: user?._id,
+      }).save();
     }
 
     throw new HttpException(
@@ -29,6 +35,10 @@ export class ShortenerService {
 
   async getBySlug(slug: string): Promise<ShortUrlDocument | null> {
     return await this.shortUrlModel.findOne({ slug });
+  }
+
+  async listByUser(userId: string): Promise<ShortUrlDocument[]> {
+    return await this.shortUrlModel.find({ user: userId });
   }
 
   async registerAccess(shortUrl: ShortUrlDocument): Promise<void> {

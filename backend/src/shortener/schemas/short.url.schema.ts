@@ -1,11 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { User } from 'src/user/schemas/user.schema';
 
 export type ShortUrlDocument = HydratedDocument<ShortUrl>;
 
 @Schema()
 export class ShortUrl {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  user?: User;
+
   @Prop({ required: true, index: true })
   @ApiProperty({ description: 'Original URL' })
   url: string;
