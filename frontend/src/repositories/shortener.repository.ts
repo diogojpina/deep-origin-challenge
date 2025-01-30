@@ -4,9 +4,9 @@ import ApiClient from "./clients/api.client";
 const client = new ApiClient();
 
 export class ShortenerRepository {
-  public static async short(url: string, token: string): Promise<ShortUrl> {
+  public static async short(url: string, slug: string): Promise<ShortUrl> {
     const data = { url };
-    const headers = { Authorization: `Bearer ${token}` };
+    const headers = { Authorization: `Bearer ${slug}` };
     const response = await client.DoRequest(
       "POST",
       `/shortener/short`,

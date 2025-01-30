@@ -16,9 +16,9 @@ export class ShortenerService {
       throw new HttpException('Invalid URL', HttpStatus.BAD_REQUEST);
 
     for (let i = 1; i <= 10; i++) {
-      const token = this.generateToken(6);
-      if ((await this.getByToken(token)) !== null) continue;
-      return await new this.shortUrlModel({ ...data, token }).save();
+      const slug = this.generateSlug(6);
+      if ((await this.getBySlug(slug)) !== null) continue;
+      return await new this.shortUrlModel({ ...data, slug }).save();
     }
 
     throw new HttpException(
@@ -27,8 +27,8 @@ export class ShortenerService {
     );
   }
 
-  async getByToken(token: string): Promise<ShortUrlDocument | null> {
-    return await this.shortUrlModel.findOne({ token });
+  async getBySlug(slug: string): Promise<ShortUrlDocument | null> {
+    return await this.shortUrlModel.findOne({ slug });
   }
 
   isValidUrl(url: string): boolean {
@@ -40,14 +40,14 @@ export class ShortenerService {
     }
   }
 
-  generateToken(length: number): string {
-    let token = '';
+  generateSlug(length: number): string {
+    let slug = '';
     const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < length; i++) {
       const idx = Math.floor(Math.random() * characters.length);
-      token += characters.charAt(idx);
+      slug += characters.charAt(idx);
     }
-    return token;
+    return slug;
   }
 }

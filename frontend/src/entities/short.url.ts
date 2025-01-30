@@ -1,13 +1,13 @@
 export class ShortUrl {
   public id: string;
   public url: string;
-  public token: string;
+  public slug: string;
   public short: string;
 
   constructor(data: any) {
     this.id = data._id;
     this.url = data.url;
-    this.token = data.token;
+    this.slug = data.slug;
     this.short = data.short || "";
   }
 }

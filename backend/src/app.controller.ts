@@ -8,14 +8,18 @@ import {
 } from '@nestjs/common';
 import { ShortenerService } from './shortener/services/shortener.service';
 import { Response } from 'express';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('App controller')
 export class AppController {
   constructor(private readonly shortenerService: ShortenerService) {}
 
-  @Get(':token')
-  async accessUrl(@Param('token') token: string, @Res() res: Response) {
-    const shortUrl = await this.shortenerService.getByToken(token);
+  @ApiOperation({ summary: 'Redirect a short URL to a original URL' })
+  @ApiQuery({ name: 'slug', description: 'URL slug' })
+  @Get(':slug')
+  async accessUrl(@Param('slug') slug: string, @Res() res: Response) {
+    const shortUrl = await this.shortenerService.getBySlug(slug);
     if (!shortUrl)
       throw new HttpException('URL not found', HttpStatus.NOT_FOUND);
 

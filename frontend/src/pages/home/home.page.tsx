@@ -25,7 +25,7 @@ const HomePage = () => {
       .then((sUrl) =>
         setShortUrl({
           ...sUrl,
-          short: `${import.meta.env.VITE_API_URL}/${sUrl.token}`,
+          short: `${import.meta.env.VITE_API_URL}/${sUrl.slug}`,
         })
       )
       .catch((error) => console.log("error", error));
