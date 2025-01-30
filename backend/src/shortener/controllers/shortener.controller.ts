@@ -28,7 +28,6 @@ export class ShortenerController {
   @Private()
   @Get('')
   async list(@CurrentUser() currentUser: User): Promise<ShortUrl[]> {
-    console.log('curser', currentUser);
-    return await this.shortenerService.listByUser('');
+    return await this.shortenerService.listByUser(currentUser._id);
   }
 }

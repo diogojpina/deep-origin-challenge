@@ -17,13 +17,13 @@ export class AppController {
 
   @ApiOperation({ summary: 'Redirect a short URL to a original URL' })
   @ApiQuery({ name: 'slug', description: 'URL slug' })
-  @Get(':slug')
+  @Get('/s/:slug')
   async accessUrl(@Param('slug') slug: string, @Res() res: Response) {
     const shortUrl = await this.shortenerService.getBySlug(slug);
     if (!shortUrl)
       throw new HttpException('URL not found', HttpStatus.NOT_FOUND);
 
-    this.shortenerService.registerAccess(shortUrl);
+    void this.shortenerService.registerAccess(shortUrl);
 
     res.redirect(shortUrl.url);
   }
