@@ -6,6 +6,8 @@ import { ShortUrl } from "../../entities";
 import "./home.page.scss";
 import { TbLayersLinked } from "react-icons/tb";
 import { IoCopy } from "react-icons/io5";
+import { Box } from "../../components/ui";
+import { Layout } from "../../components/layout/layout";
 
 const HomePage = () => {
   const [url, setUrl] = useState("");
@@ -30,8 +32,8 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container-url-shortner">
-      <div className="box">
+    <Layout>
+      <Box>
         <div className="title">
           <h1>URL Shortener</h1>
           <TbLayersLinked />
@@ -71,8 +73,8 @@ const HomePage = () => {
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </Box>
+    </Layout>
   );
 };
 
