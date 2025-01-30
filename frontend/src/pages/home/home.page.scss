@@ -1,0 +1,119 @@
+.container-url-shortner {
+    font-family: "Roboto", serif;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+
+    .box {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 0.375rem;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem;
+      
+
+      .title {
+        display: flex;
+        gap: 0.25rem;
+        align-items: center;
+
+        h1 {
+          color: #333B44;
+          font-size: 1.15rem;
+          font-weight: 700;
+        }
+
+        svg {
+          color: #727C82;
+          font-size: 1.75rem;
+        }
+      }
+
+      .subtitle {        
+        margin: 1.25rem 0 1rem 0;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;        
+
+        input {
+          margin: 0.25rem 0;
+          padding: 0.75rem 0.5rem;
+          width: 100%;
+          border: 1px solid #CDD5D6;
+          border-radius: 0.375rem;
+          font-size: 1rem;
+        }
+
+        button {
+          background-color: #7A00EE;
+          font-size: 1rem;
+          font-weight: 500;
+          color: #FFFFFF;
+          padding: 0.75rem 1.25rem;
+          border: none;
+          border-radius: 0.375rem;
+          transition: 0.2s ease-in-out;
+          cursor: pointer;
+        }
+
+        button:hover {
+          opacity: 0.8;
+        }        
+      }
+
+      .results {        
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;     
+
+        .success-message {
+            margin-top: 1rem;
+            color: #699888;
+            font-style: italic;
+            font-size: 1rem;
+        }
+  
+        .shortened-url {
+            display: flex;
+            gap: 0.25rem;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin-top: 1.25rem;
+
+            button {
+                background: none;
+                border: 1px solid #CDD5D6;
+                border-radius: 0.375rem;
+                color: #7A00EE;
+                transition: 0.2s ease-in-out;
+                padding: 0.5rem 0.75rem;
+
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.25rem;
+
+                svg {
+                color: #7A00EE;
+                font-size: 1rem;
+                }
+            }
+
+            button:hover {
+                opacity: 0.8;
+            }
+        }
+      }
+    }
+  }
