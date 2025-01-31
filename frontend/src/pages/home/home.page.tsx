@@ -38,6 +38,7 @@ const HomePage = () => {
           ...sUrl,
           short: `${import.meta.env.VITE_API_URL}/s/${sUrl.slug}`,
         });
+        setShortUrls([...shortUrls, sUrl]);
       })
       .catch((error) => console.log("error", error));
   };
