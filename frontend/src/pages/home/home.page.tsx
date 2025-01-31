@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import UrlUtil from "../../util/url.util";
 import { ShortenerService } from "../../services";
 import { ShortUrl } from "../../entities";
-import { TbLayersLinked } from "react-icons/tb";
-import { IoCopy, IoCreateOutline, IoOpenOutline } from "react-icons/io5";
-import { Box } from "../../components/ui";
-import { Layout } from "../../components/layout/layout";
 import UserStorage from "../../util/user.storage";
+import { Layout } from "../../components/layout/layout";
+import { Box } from "../../components/ui";
+import { ShortenedList } from "../../components/shortened-list/shortened.lits";
+import { IoCopy } from "react-icons/io5";
+import { TbLayersLinked } from "react-icons/tb";
 
 import "./home.page.scss";
 
@@ -39,16 +40,6 @@ const HomePage = () => {
         });
       })
       .catch((error) => console.log("error", error));
-  };
-
-  const updateShortUrl = (id: string) => {
-    const newSlug = prompt("Type a new slug");
-    if (!newSlug) return;
-
-    ShortenerService.updateSlug(id, newSlug).then((success) => {
-      if (success) load();
-      else alert("Slug not changed.");
-    });
   };
 
   return (
@@ -94,37 +85,13 @@ const HomePage = () => {
           </div>
         )}
 
-        {UserStorage.hasToken() && (
-          <div className="shortened-list">
-            <table border={1}>
-              <tr>
-                <th>Slug</th>
-                <th>URL</th>
-                <th>Action</th>
-              </tr>
-              {shortUrls.map((sUrl) => (
-                <tr>
-                  <td>{sUrl.slug}</td>
-                  <td>{sUrl.url}</td>
-                  <td>
-                    <button onClick={() => updateShortUrl(sUrl.id)}>
-                      <IoCreateOutline />
-                    </button>
-                    <button
-                      onClick={() =>
-                        window.open(
-                          `${import.meta.env.VITE_API_URL}/s/${sUrl.slug}`
-                        )
-                      }
-                    >
-                      <IoOpenOutline />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </table>
-          </div>
-        )}
+        <div className="footer-box">
+          {UserStorage.hasToken() ? (
+            <ShortenedList shortUrls={shortUrls} reload={load} />
+          ) : (
+            <>Login</>
+          )}
+        </div>
       </Box>
     </Layout>
   );
