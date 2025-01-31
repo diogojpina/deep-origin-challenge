@@ -1,17 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UrlUtil from "../../util/url.util";
 import { ShortenerService } from "../../services";
 import { ShortUrl } from "../../entities";
-
-import "./home.page.scss";
 import { TbLayersLinked } from "react-icons/tb";
-import { IoCopy } from "react-icons/io5";
+import { IoCopy, IoCreateOutline, IoOpenOutline } from "react-icons/io5";
 import { Box } from "../../components/ui";
 import { Layout } from "../../components/layout/layout";
+import UserStorage from "../../util/user.storage";
+
+import "./home.page.scss";
 
 const HomePage = () => {
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState<ShortUrl | null>(null);
+  const [shortUrls, setShortUrls] = useState<ShortUrl[]>([]);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const load = () => {
+    ShortenerService.list().then((sUrls) => setShortUrls(sUrls));
+  };
 
   const shorten = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,13 +32,23 @@ const HomePage = () => {
     }
 
     ShortenerService.short(url)
-      .then((sUrl) =>
+      .then((sUrl) => {
         setShortUrl({
           ...sUrl,
-          short: `${import.meta.env.VITE_API_URL}/${sUrl.slug}`,
-        })
-      )
+          short: `${import.meta.env.VITE_API_URL}/s/${sUrl.slug}`,
+        });
+      })
       .catch((error) => console.log("error", error));
+  };
+
+  const updateShortUrl = (id: string) => {
+    const newSlug = prompt("Type a new slug");
+    if (!newSlug) return;
+
+    ShortenerService.updateSlug(id, newSlug).then((success) => {
+      if (success) load();
+      else alert("Slug not changed.");
+    });
   };
 
   return (
@@ -71,6 +91,38 @@ const HomePage = () => {
                 <IoCopy /> Copy
               </button>
             </div>
+          </div>
+        )}
+
+        {UserStorage.hasToken() && (
+          <div className="shortened-list">
+            <table border={1}>
+              <tr>
+                <th>Slug</th>
+                <th>URL</th>
+                <th>Action</th>
+              </tr>
+              {shortUrls.map((sUrl) => (
+                <tr>
+                  <td>{sUrl.slug}</td>
+                  <td>{sUrl.url}</td>
+                  <td>
+                    <button onClick={() => updateShortUrl(sUrl.id)}>
+                      <IoCreateOutline />
+                    </button>
+                    <button
+                      onClick={() =>
+                        window.open(
+                          `${import.meta.env.VITE_API_URL}/s/${sUrl.slug}`
+                        )
+                      }
+                    >
+                      <IoOpenOutline />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </table>
           </div>
         )}
       </Box>
