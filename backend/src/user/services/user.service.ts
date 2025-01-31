@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -18,8 +18,13 @@ export class UserService {
 
   async create(dto: UserDto): Promise<User> {
     dto.password = await bcrypt.hash(dto.password, 10);
-    return await new this.userModel({
-      ...dto,
-    }).save();
+    try {
+      return await new this.userModel({
+        ...dto,
+      }).save();
+    } catch (error) {
+      console.log('error', error);
+      throw new HttpException('Duplicated username', HttpStatus.BAD_REQUEST);
+    }
   }
 }
