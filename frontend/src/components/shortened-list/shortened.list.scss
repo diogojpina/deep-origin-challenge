@@ -1,4 +1,66 @@
 .shortened-list {
-    
+    overflow-x: auto;
+
+    table {
+        font-family: "Roboto", sans-serif;
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 0.375rem;
+        overflow: hidden;
+
+        thead {
+            background-color: #7a00ee;
+            color: #fff;
+            text-align: center;
+
+            th {
+                padding: 0.75rem;
+                font-weight: 500;
+            }
+        }
+
+        tbody {
+            border-bottom: 3px solid lightgray;
+
+            tr {
+                transition: 0.2s ease-in-out;
+
+                &:nth-child(even) {
+                background-color: #f8f8f8;
+            }
+
+            &:hover {
+                background-color: #FAFAFA;
+            }
+
+            td {
+                padding: 0.75rem;
+                min-height: 67px;
+                border-bottom: 2px solid #ddd;
+
+                button {
+                    background: none;
+                    border: none;
+                    color: #7a00ee;
+                    font-size: 1.5rem;
+                    transition: 0.2s ease-in-out;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #5900bb;
+                    }
+                }
+
+                &:last-child {
+                    border: none;
+                    border-bottom: 2px solid #ddd;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 1.5rem;
+                }
+            }
+            }
+        }
+    }
 }
-  
