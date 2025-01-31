@@ -3,6 +3,7 @@ import UrlUtil from "../../util/url.util";
 import { ShortenerService } from "../../services";
 import { ShortUrl } from "../../entities";
 import UserStorage from "../../util/user.storage";
+import { NavLink } from "react-router";
 import { Layout } from "../../components/layout/layout";
 import { Box } from "../../components/ui";
 import { ShortenedList } from "../../components/shortened-list/shortened.lits";
@@ -90,7 +91,7 @@ const HomePage = () => {
           {UserStorage.hasToken() ? (
             <ShortenedList shortUrls={shortUrls} reload={load} />
           ) : (
-            <>Login</>
+            <NavLink to="/auth/login">Login</NavLink>
           )}
         </div>
       </Box>
