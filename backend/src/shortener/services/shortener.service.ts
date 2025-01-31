@@ -4,6 +4,7 @@ import { ShortUrl, ShortUrlDocument } from '../schemas/short.url.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/user/schemas/user.schema';
+import { ShortUrlUpdateSlugDto } from '../dtos/short.url.update.slug.dto';
 
 @Injectable()
 export class ShortenerService {
@@ -19,7 +20,6 @@ export class ShortenerService {
     for (let i = 1; i <= 10; i++) {
       const slug = this.generateSlug(6);
       if ((await this.getBySlug(slug)) !== null) continue;
-      console.log({ ...data, slug, user: user });
       return await new this.shortUrlModel({
         ...data,
         slug,
@@ -37,14 +37,43 @@ export class ShortenerService {
     return await this.shortUrlModel.findOne({ slug });
   }
 
+  async updateSlug(dto: ShortUrlUpdateSlugDto, user?: User): Promise<boolean> {
+    const shortUrl = await this.shortUrlModel.findOne({ _id: dto.id });
+    if (!shortUrl) {
+      throw new HttpException('Short URL not found', HttpStatus.BAD_REQUEST);
+    }
+
+    if (
+      !shortUrl.user ||
+      user?._id?.toString() !== shortUrl.user?._id.toString()
+    ) {
+      throw new HttpException(
+        'Short URL is not related to the user',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    if (await this.getBySlug(dto.slug)) {
+      throw new HttpException(
+        'Slug is already in the database',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    await this.shortUrlModel.updateOne(
+      { _id: dto.id },
+      { $set: { slug: dto.slug } },
+    );
+
+    return true;
+  }
+
   async listByUser(userId: string): Promise<ShortUrlDocument[]> {
     return await this.shortUrlModel.find({ user: userId });
   }
 
   async registerAccess(shortUrl: ShortUrlDocument): Promise<void> {
-    console.log('shortUrl._id', shortUrl._id);
     const accessCount = shortUrl.accessCount + 1;
-    console.log('new-count', accessCount);
     await this.shortUrlModel.updateOne(
       { _id: shortUrl._id },
       { $set: { accessCount } },
